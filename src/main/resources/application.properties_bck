@@ -1,0 +1,11 @@
+spring.application.name=customer-service
+server.error.include-message=always
+spring.datasource.url=jdbc:postgresql://localhost:5432/customer
+spring.datasource.username=amigoscode
+spring.datasource.password=password
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.main.web-application-type=servlet
+
