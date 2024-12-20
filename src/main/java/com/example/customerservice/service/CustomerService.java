@@ -6,6 +6,8 @@ import com.example.customerservice.exception.DuplicateResourceFoundException;
 import com.example.customerservice.exception.ResourceNotFound;
 import com.example.customerservice.model.Customer;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,13 +17,23 @@ public class CustomerService {
 
 
     private final CustomerDao customerDao;
+    private final JdbcTemplate jdbcTemplate;
 
-    public CustomerService(@Qualifier("jpa") CustomerDao customerDao) {
+    public CustomerService(@Qualifier("jdbc") CustomerDao customerDao, JdbcTemplate jdbcTemplate) {
         this.customerDao = customerDao;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Customer> getAllCustomers() {
-        return customerDao.selectAllCustomers();
+        var getAllCustomers = "select id, name, email, age from customer";
+        RowMapper<Customer> customerRowMapper = (rs, rowNum) -> new Customer(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("email"),
+                rs.getInt("age")
+        );
+        List<Customer> customers = jdbcTemplate.query(getAllCustomers, customerRowMapper);
+        return customers;
     }
 
     public Customer getCustomerById(Integer id) {
