@@ -40,6 +40,7 @@ public class CustomerServiceApplication {
 //
 //            List<Customer> customers = List.of(alex, jamila);
 
+
             var faker = new Faker();
             Random random = new Random();
             Name name = faker.name();
