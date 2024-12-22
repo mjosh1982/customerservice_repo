@@ -19,5 +19,5 @@ public class TestContainersTest extends AbstractTestContainer {
         //When
 
         //Then
-    }
+    }//end of method canStartPostgresDB
 }
