@@ -4,10 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CustomerServiceApplicationTests {
+class CustomerServiceApplicationTests extends AbstractTestContainer {
 
     @Test
     void contextLoads() {
+
     }
 
 }

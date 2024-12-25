@@ -1,6 +1,6 @@
 package com.example.customerservice.service;
 
-import com.example.customerservice.controller.CustomerRegistrationRequest;
+import com.example.customerservice.model.CustomerRegistrationRequest;
 import com.example.customerservice.dao.CustomerDao;
 import com.example.customerservice.exception.DuplicateResourceFoundException;
 import com.example.customerservice.exception.ResourceNotFound;

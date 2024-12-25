@@ -1,4 +1,4 @@
-package com.example.customerservice.controller;
+package com.example.customerservice.model;
 
 public record CustomerRegistrationRequest(
         String name,

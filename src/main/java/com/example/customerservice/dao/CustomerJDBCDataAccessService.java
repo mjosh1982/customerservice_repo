@@ -15,13 +15,13 @@ import java.util.Optional;
  * It uses {@code JdbcTemplate} from Spring Framework to interact with the database.
  */
 @Repository("jdbc")
-public class CustumerJDBCDataAccessService implements CustomerDao {
+public class CustomerJDBCDataAccessService implements CustomerDao {
 
     private final JdbcTemplate jdbcTemplate;
 
     private final CustomerRowMapper customerRowMapper;
 
-    public CustumerJDBCDataAccessService(JdbcTemplate jdbcTemplate, CustomerRowMapper customerRowMapper) {
+    public CustomerJDBCDataAccessService(JdbcTemplate jdbcTemplate, CustomerRowMapper customerRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.customerRowMapper = customerRowMapper;
     }
