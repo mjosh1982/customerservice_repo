@@ -118,9 +118,27 @@ public class CustomerServiceTest {
 
     @Test
     void deleteCustomerById() {
+        //when
+        underTest.deleteCustomerById(10);
+        //then
+        verify(customerDao).deleteCustomerById(10);
     }
 
     @Test
     void updateCustomerDetails() {
+        //when
+        Customer customer = new Customer(10, "Manoj", "manojoshi1982@gmail.com", 42);
+
+        when(customerDao.updateCustomer(any())).thenReturn(customer);
+
+        Customer customer1 = underTest.updateCustomerDetails(customer);
+
+        //then
+
+        ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
+        verify(customerDao).updateCustomer(customerArgumentCaptor.capture());
+        Customer actual = customerArgumentCaptor.getValue();
+
+        assertThat(actual).isEqualTo(customer);
     }
 }
