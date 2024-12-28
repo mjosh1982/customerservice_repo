@@ -46,15 +46,15 @@ public class CustomerJPADataAccessService implements CustomerDao {
 
     @Override
     public Customer updateCustomer(Customer customer) {
-        Optional<Customer> customerFromDb = customerRepository.findById(customer.getId());
-        if (!customerFromDb.isEmpty()) {
-            Customer customerToUpdate = customerFromDb.get();
-            customerToUpdate.setName(customer.getName());
-            customerToUpdate.setEmail(customer.getEmail());
-            customerToUpdate.setAge(customer.getAge());
-            return customerRepository.save(customerToUpdate);
-        } else {
-            return null;
-        }
+//        Optional<Customer> customerFromDb = customerRepository.findById(customer.getId());
+//        if (!customerFromDb.isEmpty()) {
+//            Customer customerToUpdate = customerFromDb.get();
+//            customerToUpdate.setName(customer.getName());
+//            customerToUpdate.setEmail(customer.getEmail());
+//            customerToUpdate.setAge(customer.getAge());
+        return customerRepository.save(customer);
+//        } else {
+//            return null;
+//        }
     }
 }

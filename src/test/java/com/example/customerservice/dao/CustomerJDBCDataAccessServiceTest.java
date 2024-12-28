@@ -14,17 +14,30 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 
+/**
+ * Test suite for CustomerJDBCDataAccessService.
+ * This class contains unit tests to validate the core functionalities of CustomerJDBCDataAccessService,
+ * such as adding, updating, deleting, and fetching customers from the database.
+ */
 class CustomerJDBCDataAccessServiceTest extends AbstractTestContainer {
 
     private CustomerJDBCDataAccessService underTest;
     private JdbcTemplate jdbcTemplate = getJdbcTemplate();
     private CustomerRowMapper customerRowMapper = new CustomerRowMapper();
 
+    /**
+     * Sets up the test environment before each test execution.
+     * Initializes the instance of CustomerJDBCDataAccessService with required dependencies.
+     */
     @BeforeEach
     void setUp() {
         underTest = new CustomerJDBCDataAccessService(jdbcTemplate, customerRowMapper);
     }
 
+    /**
+     * Tests adding a customer to the database.
+     * Verifies that the customer is successfully added and can be retrieved from the database.
+     */
     @Test
     void addCustomer() {
 
@@ -43,6 +56,10 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainer {
         assertThat(customers).isNotEmpty();
     }
 
+    /**
+     * Tests retrieving all customers from the database.
+     * Verifies that the method retrieves a non-empty list after adding a customer.
+     */
     @Test
     void selectAllCustomers() {
 
@@ -61,6 +78,10 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainer {
         assertThat(customers).isNotEmpty();
     }
 
+    /**
+     * Tests retrieving a specific customer by their ID.
+     * Ensures that a customer can be correctly fetched by their ID, and all their details match the expected values.
+     */
     @Test
     void selectCustomerById() {
 
@@ -95,6 +116,10 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainer {
 
     }
 
+    /**
+     * Tests the scenario where a customer is fetched by an invalid or non-existing ID.
+     * Verifies that the method returns an empty Optional.
+     */
     @Test
     void willReturnEmptyCustomerIdIsNullForSelectCustomerById() {
         int id = -1;
@@ -102,6 +127,10 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainer {
         assertThat(actual).isEmpty();
     }
 
+    /**
+     * Tests checking if a customer with a specific email exists in the database.
+     * Verifies that the method correctly returns true when the email exists.
+     */
     @Test
     void personWithEmailExists() {
 
@@ -121,6 +150,10 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainer {
         assertThat(exists).isTrue();
     }
 
+    /**
+     * Tests deleting a customer by ID.
+     * Ensures that the customer is successfully deleted and cannot be retrieved afterward.
+     */
     @Test
     void deleteCustomerById() {
 
@@ -147,6 +180,10 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainer {
         assertThat(actual).isEmpty();
     }
 
+    /**
+     * Tests the scenario where a deletion is attempted for a non-existing customer ID.
+     * Verifies that the method correctly returns false.
+     */
     @Test
     void deleteCustomerByIdDoesNotExist() {
         // Given
@@ -159,6 +196,10 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainer {
         assertThat(result).isFalse();
     }
 
+    /**
+     * Tests checking if a customer with a specific email exists when it does not.
+     * Verifies that the method correctly returns false.
+     */
     @Test
     void personWithEmailDoesNotExist() {
         // Given
@@ -171,6 +212,10 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainer {
         assertThat(exists).isFalse();
     }
 
+    /**
+     * Tests updating a customer's details in the database.
+     * Ensures that the updated details are correctly saved and retrieved.
+     */
     @Test
     void updateCustomer() {
 

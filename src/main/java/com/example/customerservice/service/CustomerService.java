@@ -1,13 +1,11 @@
 package com.example.customerservice.service;
 
-import com.example.customerservice.model.CustomerRegistrationRequest;
 import com.example.customerservice.dao.CustomerDao;
 import com.example.customerservice.exception.DuplicateResourceFoundException;
 import com.example.customerservice.exception.ResourceNotFound;
 import com.example.customerservice.model.Customer;
+import com.example.customerservice.model.CustomerRegistrationRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,28 +15,18 @@ public class CustomerService {
 
 
     private final CustomerDao customerDao;
-    private final JdbcTemplate jdbcTemplate;
 
-    public CustomerService(@Qualifier("jdbc") CustomerDao customerDao, JdbcTemplate jdbcTemplate) {
+    public CustomerService(@Qualifier("jdbc") CustomerDao customerDao) {
         this.customerDao = customerDao;
-        this.jdbcTemplate = jdbcTemplate;
     }
 
+
     public List<Customer> getAllCustomers() {
-        var getAllCustomers = "select id, name, email, age from customer";
-        RowMapper<Customer> customerRowMapper = (rs, rowNum) -> new Customer(
-                rs.getInt("id"),
-                rs.getString("name"),
-                rs.getString("email"),
-                rs.getInt("age")
-        );
-        List<Customer> customers = jdbcTemplate.query(getAllCustomers, customerRowMapper);
-        return customers;
+        return customerDao.selectAllCustomers();
     }
 
     public Customer getCustomerById(Integer id) {
-        return customerDao.selectCustomerById(id)
-                .orElseThrow(() -> new ResourceNotFound("Customer with id [%s] not found.".formatted(id)));
+        return customerDao.selectCustomerById(id).orElseThrow(() -> new ResourceNotFound("Customer with id [%s] not found".formatted(id)));
     }
 
     public void addCustomer(CustomerRegistrationRequest request) {
@@ -58,8 +46,7 @@ public class CustomerService {
     }
 
     private boolean personWithEmailExists(String email) {
-        return getAllCustomers().stream()
-                .anyMatch(c -> c.getEmail().equals(email));
+        return customerDao.personWithEmailExists(email);
     }
 
     public boolean deleteCustomerById(Integer id) {
