@@ -87,4 +87,13 @@ public class Customer {
                 ", age=" + age +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Customer customer = (Customer) obj;
+        return this.id.equals(customer.getId()) &&
+                this.name.equals(customer.getName()) &&
+                this.email.equals(customer.getEmail()) &&
+                this.age.equals(customer.getAge());
+    }
 }

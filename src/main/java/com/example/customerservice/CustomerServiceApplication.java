@@ -26,21 +26,6 @@ public class CustomerServiceApplication {
     @Bean
     CommandLineRunner runner(CustomerRepository customerRepository) {
         return args -> {
-//            Customer alex = new Customer(
-//                    "Alex",
-//                    "alex@gmail.com",
-//                    21
-//            );
-//
-//            Customer jamila = new Customer(
-//                    "Jamila",
-//                    "jamila@gmail.com",
-//                    19
-//            );
-//
-//            List<Customer> customers = List.of(alex, jamila);
-
-
             var faker = new Faker();
             Random random = new Random();
             Name name = faker.name();

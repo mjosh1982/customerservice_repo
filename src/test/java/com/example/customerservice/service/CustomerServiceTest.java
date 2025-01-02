@@ -22,82 +22,109 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+
+/**
+ * Test class for CustomerService to ensure business logic and data access methods work as expected.
+ * Includes unit tests for all main service methods like add, update, delete, and fetch customers.
+ */
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
 
     @Mock
-    private CustomerDao customerDao;
-    private CustomerService underTest;
+    private CustomerDao customerDao; // Mocked dependency to simulate DAO layer interactions.
+    private CustomerService underTest; // The class under test, instantiated before each test.
 
+    /**
+     * Sets up the preconditions for tests by initializing the CustomerService instance
+     * and injecting the mocked CustomerDao dependency into it.
+     */
     @BeforeEach
     void setUp() {
         underTest = new CustomerService(customerDao);
     }
 
 
+    /**
+     * Test to verify that the getAllCustomers method calls
+     * the selectAllCustomers method in the CustomerDao layer.
+     */
     @Test
     void getAllCustomers() {
-        //when
+        // Act: Call the getAllCustomers method in the service layer.
         underTest.getAllCustomers();
-
-        //then
+    
+        // Assert: Verify that the correct DAO method is invoked.
         verify(customerDao).selectAllCustomers();
     }
 
+    /**
+     * Test to verify that getting a customer by their ID returns the correct Customer object.
+     * Simulates a successful database query where a customer exists with the given ID.
+     */
     @Test
     void getCustomerById() {
-
-
-        int id = 10;
+    
+        // Arrange: Sample customer data and mocking customerDao to return it.
+        int id = 10; // ID of the customer to fetch.
         Customer customer = new Customer(id, "Manoj", "manojoshi1982@gmail.com", 42);
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
-
-        //when
+    
+        // Act: Call the getCustomerById method on the service.
         Customer actual = underTest.getCustomerById(10);
-
-        //then
+    
+        // Assert: Verify the fetched customer matches the expected one.
         assertThat(actual).isNotNull();
         assertThat(actual).isEqualTo(customer);
     }
 
+    /**
+     * Test to verify exception handling when a customer ID is not found in the database.
+     * Ensures a ResourceNotFound exception is thrown with the correct message.
+     */
     @Test
     void getCustomerByIdReturnsNull() {
-        int id = 10;
+        // Arrange: Setup mock for a non-existing customer ID.
+        int id = 10; // Non-existent customer ID.
         Mockito.when(customerDao.selectCustomerById(id)).thenReturn(Optional.empty());
-
-
-        //then
+    
+        // Assert: Verify that the ResourceNotFound exception is thrown.
         assertThatThrownBy(() -> underTest.getCustomerById(id))
                 .isInstanceOf(ResourceNotFound.class)
                 .hasMessageContaining("Customer with id [%s] not found".formatted(id));
-
     }
 
+    /**
+     * Test to verify that adding a valid customer works correctly
+     * and ensures the data passed to the DAO matches the user input.
+     */
     @Test
     void addCustomer() {
-
-        //Given
-        String email = "manojoshi1982@gmail.com";
-
+    
+        // Arrange: Configure mock and create a sample registration request.
+        String email = "manojoshi1982@gmail.com"; // New customer email.
         when(customerDao.personWithEmailExists(email)).thenReturn(false);
-
-        //When
         CustomerRegistrationRequest request = new CustomerRegistrationRequest("Manoj", email, 42);
-
+    
+        // Act: Add a new customer using the service method.
         underTest.addCustomer(request);
-
+    
+        // Capture the customer passed to the DAO for additional assertions.
         ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
         verify(customerDao).addCustomer(customerArgumentCaptor.capture());
         Customer capturedCustomer = customerArgumentCaptor.getValue();
-
+    
+        // Assert: Validate the captured customer data matches the input.
         assertThat(capturedCustomer.getId()).isNull();
         assertThat(capturedCustomer.getName()).isEqualTo(request.name());
         assertThat(capturedCustomer.getEmail()).isEqualTo(request.email());
         assertThat(capturedCustomer.getAge()).isEqualTo(request.age());
-
     }
 
 
+    /**
+     * Test to ensure that attempting to add a customer with a duplicate email address
+     * throws a DuplicateResourceFoundException, with the DAO add method not being called.
+     */
     @Test
     void addCustomerWithDuplicateEmailError() {
 
@@ -116,6 +143,10 @@ public class CustomerServiceTest {
     }
 
 
+    /**
+     * Test to verify that deleting a customer by their ID results in the DAO deleteCustomerById
+     * method being called with the correct ID.
+     */
     @Test
     void deleteCustomerById() {
         //when
@@ -124,6 +155,10 @@ public class CustomerServiceTest {
         verify(customerDao).deleteCustomerById(10);
     }
 
+    /**
+     * Test to ensure that updating a customer's details works correctly by verifying
+     * that the correct customer data is provided to the DAO update method and matches the expected data.
+     */
     @Test
     void updateCustomerDetails() {
         //when
