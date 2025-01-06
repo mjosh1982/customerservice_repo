@@ -13,6 +13,10 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>customer-service</name>
     <description>customer-service</description>
+    <organization>
+        <name>manojjoshi1982</name>
+        <url>https://linkedin.com/in/manojrjoshi</url>
+    </organization>
     <url/>
     <licenses>
         <license/>
@@ -28,6 +32,8 @@
     </scm>
     <properties>
         <java.version>21</java.version>
+        <docker.username>manojoshi1982</docker.username>
+        <docker.password>Mjosh@1982</docker.password>
     </properties>
     <dependencies>
         <dependency>
@@ -112,11 +118,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
                 <configuration>
+                    <source>21</source>
+                    <target>21</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                            <version>1.18.28</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
@@ -124,7 +134,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.4.1</version>
                 <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -192,6 +205,70 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>com.google.cloud.tools</groupId>-->
+            <!--                <artifactId>jib-maven-plugin</artifactId>-->
+            <!--                <version>3.4.4</version>-->
+            <!--                <configuration>-->
+            <!--                    <from>-->
+            <!--                        <image>eclipse-temurin:21-jre</image>-->
+            <!--                        <auth>-->
+            <!--                            <username>manojoshi1982</username>-->
+            <!--                            <password>Mjosh@1982</password>-->
+            <!--                        </auth>-->
+            <!--                        <platforms>-->
+            <!--                            <platform>-->
+            <!--                                <architecture>arm64</architecture>-->
+            <!--                                <os>linux</os>-->
+            <!--                            </platform>-->
+            <!--                            <platform>-->
+            <!--                                <architecture>amd64</architecture>-->
+            <!--                                <os>linux</os>-->
+            <!--                            </platform>-->
+
+            <!--                        </platforms>-->
+            <!--                    </from>-->
+            <!--                    <to>-->
+            <!--                        <image>docker.io/${organization.name}/${project.artifactId}:${project.version}</image>-->
+            <!--                        <auth>-->
+            <!--                            <username>manojoshi1982</username>-->
+            <!--                            <password>Mjosh@1982</password>-->
+            <!--                        </auth>-->
+            <!--                        <tags>-->
+            <!--                            <tag>${project.version}</tag>-->
+            <!--                            <tag>latest</tag>-->
+            <!--                        </tags>-->
+            <!--                    </to>-->
+
+            <!--                </configuration>-->
+            <!--            </plugin>-->
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.4</version>
+                <configuration>
+                    <from>
+                        <image>eclipse-temurin:21-jre</image>
+                        <platforms>
+                            <platform>
+                                <architecture>arm64</architecture>
+                                <os>linux</os>
+                            </platform>
+                            <platform>
+                                <architecture>amd64</architecture>
+                                <os>linux</os>
+                            </platform>
+                        </platforms>
+                    </from>
+                    <to>
+                        <image>docker.io/${docker.username}/${project.artifactId}:${project.version}</image>
+                        <tags>
+                            <tag>${project.version}</tag>
+                            <tag>latest</tag>
+                        </tags>
+                    </to>
+                </configuration>
             </plugin>
         </plugins>
     </build>

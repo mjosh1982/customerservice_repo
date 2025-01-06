@@ -27,8 +27,18 @@ services:
     networks:
       - postgres
     restart: unless-stopped
-    depends_on:
-      - db
+#  customer-service:
+#    container_name: customer-service
+#    image: manojoshi1982/customer-service
+#    ports:
+#      - "8080:8080"
+#    networks:
+#        - postgres
+#    depends_on:
+#      - db
+#    restart: unless-stopped
+#    command:
+#      - "-spring.datasource.url=jdbc:postgresql://db:5432/customer"
 
 networks:
   postgres:
