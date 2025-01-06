@@ -27,19 +27,18 @@ services:
     networks:
       - postgres
     restart: unless-stopped
-#  customer-service:
-#    container_name: customer-service
-#    image: manojoshi1982/customer-service
-#    ports:
-#      - "8080:8080"
-#    networks:
-#        - postgres
-#    depends_on:
-#      - db
-#    restart: unless-stopped
-#    command:
-#      - "-spring.datasource.url=jdbc:postgresql://db:5432/customer"
-
+  customer-service:
+    container_name: customer-service
+    image: manojoshi1982/customer-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/customer
+    ports:
+      - "8080:8080"
+    networks:
+      - postgres
+    depends_on:
+      - db
+    restart: unless-stopped
 networks:
   postgres:
     driver: bridge
